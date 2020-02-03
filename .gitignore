@@ -1,0 +1,16 @@
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+*.ssh
+*awinterlab
+*.git
+*.bash_history
+*.bash_profile
+*.bashrc
+*.gitconfig
+*.inputrc
+*.profile
+*.pub
+*id_rsa
