@@ -1,5 +1,7 @@
 package Menu;
 
+import Structure.Route;
+import Structure.RouteObject;
 import Utils.ScannerInput;
 import org.apache.log4j.Logger;
 
@@ -43,10 +45,12 @@ public class Menu {
         int typeMeny = scannerInput.intInput();
         switch (typeMeny){
             case 0:
-
+            //Show all cities
             break;
             case 1:
-             //Route.setRouteProperties();
+             Route route =new Route();
+                RouteObject.setProperties(route);
+                System.out.println("The distance between cities :" +route.getDistance()+"km");
             break;
         }
 
