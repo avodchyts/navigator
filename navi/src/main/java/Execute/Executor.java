@@ -4,7 +4,9 @@ import Menu.Menu;
 
 public class Executor {
     public static void main(String[] args) throws Exception {
-       Menu.menuSelect();
+
+        Menu menu = new Menu();
+       menu.menuSelect();
            }
 }
 
