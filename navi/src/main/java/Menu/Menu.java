@@ -39,7 +39,8 @@ public class Menu {
 
     public void menuSelect() throws IOException{
        try {
-           FileInputStream file = new FileInputStream("D:/navigator/navi/src/main/resources/Menu.properties");
+           String path = ClassLoader.getSystemClassLoader().getResource("Menu.properties").getFile();
+           FileInputStream file = new FileInputStream(path);
            Properties properties = new Properties();
            properties.load(file);
 
@@ -57,12 +58,12 @@ public class Menu {
 
            switch (typeMeny) {
                case 0:   //Show all cities
-                   SqlSessionFactory sqlSessionFactory= new OpenSession().getOpenSession();
-                   List<City> cities = new CityDAO(sqlSessionFactory).getNameCity();
-                   Iterator<City> cityIterator= cities.iterator();
-                   while(cityIterator.hasNext()){
-                      System.out.println(cityIterator.next());
-                   }
+//                   SqlSessionFactory sqlSessionFactory= new OpenSession().getOpenSession();
+//                   List<City> cities = new CityDAO(sqlSessionFactory).getNameCity();
+//                   Iterator<City> cityIterator= cities.iterator();
+//                   while(cityIterator.hasNext()){
+//                      System.out.println(cityIterator.next());
+//                   }
                    break;
                case 1:
                    Route route = new Route();
