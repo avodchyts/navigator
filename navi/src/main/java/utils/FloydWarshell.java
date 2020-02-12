@@ -1,51 +1,32 @@
-package Utils;
+package utils;
 
-import DB.Model.City;
-import DB.Model.CityRange;
+import db.model.CityModel;
+import db.model.CityRangeModel;
+import service.DBService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FloydWarshell {
-    private List<CityRange> ranges = new ArrayList<>();
-    private List<City> allCities = new ArrayList<>();
+    private List<CityRangeModel> ranges = new ArrayList<>();
+    private List<CityModel> allCities = new ArrayList<>();
 
     public FloydWarshell() {
-        City brest = new City(0, "Brest");
-        City minsk = new City(1, "Minsk");
-        City grodno = new City(2, "Grodno");
-        City gomel = new City(3, "Gomel'");
-        City mogilev = new City(4, "Mogilev");
-        City vitebsk = new City(5, "Vitebsk");
-        allCities.add(brest);
-        allCities.add(minsk);
-        allCities.add(grodno);
-        allCities.add(gomel);
-        allCities.add(mogilev);
-        allCities.add(vitebsk);
-        ranges.add(new CityRange(1, brest, minsk, 300));
-        ranges.add(new CityRange(2, brest, grodno, 200));
-        ranges.add(new CityRange(3, brest, gomel, 400));
-        ranges.add(new CityRange(4, minsk, brest, 300));
-        ranges.add(new CityRange(5, minsk, grodno, 320));
-        ranges.add(new CityRange(6, minsk, vitebsk, 280));
-        ranges.add(new CityRange(7, minsk, mogilev, 180));
-        ranges.add(new CityRange(8, minsk, gomel, 270));
-        ranges.add(new CityRange(9, grodno, brest, 200));
-        ranges.add(new CityRange(10, grodno, minsk, 320));
-        ranges.add(new CityRange(11, grodno, vitebsk, 293));
-        ranges.add(new CityRange(12, vitebsk, grodno, 293));
-        ranges.add(new CityRange(13, vitebsk, minsk, 280));
-        ranges.add(new CityRange(14, vitebsk, mogilev, 181));
-        ranges.add(new CityRange(14, mogilev, vitebsk, 181));
-        ranges.add(new CityRange(15, mogilev, minsk, 180));
-        ranges.add(new CityRange(16, mogilev, gomel, 160));
-        ranges.add(new CityRange(17, gomel, mogilev, 160));
-        ranges.add(new CityRange(18, gomel, minsk, 270));
-        ranges.add(new CityRange(18, gomel, brest, 200));
+
+        try {
+            DBService service1 = new DBService();
+            List<CityModel> citymodel1 = service1.getCities();
+            List<CityRangeModel> cityrangemodel1 = service1.getRanges();
+            ranges.addAll(cityrangemodel1);
+            allCities.addAll(citymodel1);
+        } catch (
+                IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<City> getAllCities() {
+    public List<CityModel> getAllCities() {
         return allCities;
     }
 
@@ -67,7 +48,7 @@ public class FloydWarshell {
                     if (u == destinationCityId) {
                         if (u != v && path[v][u] != -1) {
                             System.out.print("Shortest Path from city " + allCities.get(v).getName() +
-                                    " to vertex " + allCities.get(u).getName() + " is (" + allCities.get(v).getName() + "->");
+                                    " to city " + allCities.get(u).getName() + " is (" + allCities.get(v).getName() + "->");
                             printPath(path, v, u);
                             System.out.println(allCities.get(u).getName() + ")");
                             System.out.println("The distance between cities :" + cost[v][u]);
@@ -126,7 +107,11 @@ public class FloydWarshell {
         printSolution(cost, path, N, sourceCityIndex, destinationCityIndex);
     }
 
-    public void calculateShortestRange(City sourceCity, City destinationCity) {
+    public void calculateShortestRange(CityModel sourceCity, CityModel destinationCity) {
+        if (sourceCity.equals(destinationCity)) {
+            System.out.println("Unable to build route!");
+            return;
+        }
         int M = Integer.MAX_VALUE;
         int[][] matrix = new int[allCities.size()][allCities.size()];
         for (int x = 0; x < allCities.size(); x++) {
@@ -137,9 +122,9 @@ public class FloydWarshell {
                     continue;
                 }
                 line[y] = M;
-                for (CityRange range : ranges) {
-                    if (range.getSourceCity() == allCities.get(x) && range.getTargetCity() == allCities.get(y)) {
-                        line[y] = range.getRange();
+                for (CityRangeModel range : ranges) {
+                    if (range.getSourceCity().equals(allCities.get(x)) && range.getTargetCity().equals(allCities.get(y))) {
+                        line[y] = range.getDistance();
                         break;
                     }
                 }
@@ -149,10 +134,10 @@ public class FloydWarshell {
         int sourceIndex = 0;
         int destinationIndex = 0;
         for (int i = 0; i < allCities.size(); i++) {
-            if (allCities.get(i) == sourceCity) {
+            if (allCities.get(i).equals(sourceCity)) {
                 sourceIndex = i;
             }
-            if (allCities.get(i) == destinationCity) {
+            if (allCities.get(i).equals(destinationCity)) {
                 destinationIndex = i;
             }
         }

@@ -1,20 +1,14 @@
 package Menu;
 
-import DB.DAO.CityDAO;
-import DB.Model.City;
-import Structure.Route;
-import Structure.RouteObject;
-import Utils.OpenSession;
-import Utils.ScannerInput;
-import org.apache.ibatis.session.SqlSessionFactory;
+import structure.Route;
+import structure.RouteObject;
+import utils.ScannerInput;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 
 public class Menu {
@@ -59,8 +53,8 @@ public class Menu {
            switch (typeMeny) {
                case 0:   //Show all cities
 //                   SqlSessionFactory sqlSessionFactory= new OpenSession().getOpenSession();
-//                   List<City> cities = new CityDAO(sqlSessionFactory).getNameCity();
-//                   Iterator<City> cityIterator= cities.iterator();
+//                   List<CityModel> cities = new CityDAO(sqlSessionFactory).getNameCity();
+//                   Iterator<CityModel> cityIterator= cities.iterator();
 //                   while(cityIterator.hasNext()){
 //                      System.out.println(cityIterator.next());
 //                   }

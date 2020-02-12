@@ -1,4 +1,4 @@
-package DB.DAO;
+package db.dao;
 
 public class CityDAO {
 }
