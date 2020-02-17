@@ -71,7 +71,7 @@ public class Menu {
                    case 1:
                    Route route = new Route();
                    RouteObject.setProperties(route);
-                   route.getDistance();
+                   route.distance();
                    break;
                case 2:
                    System.exit(0);
