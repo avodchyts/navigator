@@ -47,11 +47,12 @@ public class FloydWarshell {
                 for (int u = 0; u < N; u++) {
                     if (u == destinationCityId) {
                         if (u != v && path[v][u] != -1) {
-                            System.out.print("Shortest Path from city " + allCities.get(v).getName() +
-                                    " to city " + allCities.get(u).getName() + " is (" + allCities.get(v).getName() + "->");
-                            printPath(path, v, u);
-                            System.out.println(allCities.get(u).getName() + ")");
-                            System.out.println("The distance between cities :" + cost[v][u]);
+                           System.out.print("Shortest Path from city " + allCities.get(v).getName() +
+                                  " to city " + allCities.get(u).getName() + " is (" + allCities.get(v).getName() + "->");
+                           printPath(path, v, u);
+                           System.out.println(allCities.get(u).getName() + ")");
+                           System.out.println("The distance between cities :" + cost[v][u]);
+
                         }
                     }
                 }
@@ -107,10 +108,10 @@ public class FloydWarshell {
         printSolution(cost, path, N, sourceCityIndex, destinationCityIndex);
     }
 
-    public void calculateShortestRange(CityModel sourceCity, CityModel destinationCity) {
+    public void  calculateShortestRange(CityModel sourceCity, CityModel destinationCity) {
         if (sourceCity.equals(destinationCity)) {
             System.out.println("Unable to build route!");
-            return;
+            return ;
         }
         int M = Integer.MAX_VALUE;
         int[][] matrix = new int[allCities.size()][allCities.size()];
@@ -142,5 +143,6 @@ public class FloydWarshell {
             }
         }
         floydWarshell(matrix, allCities.size(), sourceIndex, destinationIndex);
-    }
+
+        }
 }
