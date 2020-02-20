@@ -2,9 +2,9 @@ package utils;
 
 import db.model.CityModel;
 import db.model.CityRangeModel;
+import org.apache.ibatis.session.SqlSessionException;
 import service.DBService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class FloydWarshell {
             ranges.addAll(cityrangemodel1);
             allCities.addAll(citymodel1);
         } catch (
-                IOException e) {
+                SqlSessionException e) {
             e.printStackTrace();
         }
     }
@@ -41,27 +41,23 @@ public class FloydWarshell {
 
     // Function to print the shortest cost with path
     // information between all pairs of vertices
-    private void printSolution(int[][] cost, int[][] path, int N, int sourceCityId, int destinationCityId) {
-        for (int v = 0; v < N; v++) {
-            if (v == sourceCityId) {
-                for (int u = 0; u < N; u++) {
-                    if (u == destinationCityId) {
-                        if (u != v && path[v][u] != -1) {
-                           System.out.print("Shortest Path from city " + allCities.get(v).getName() +
-                                  " to city " + allCities.get(u).getName() + " is (" + allCities.get(v).getName() + "->");
-                           printPath(path, v, u);
-                           System.out.println(allCities.get(u).getName() + ")");
-                           System.out.println("The distance between cities :" + cost[v][u]);
+    public int printSolution(int[][] cost, int[][] path, int N, int sourceCityId, int destinationCityId) {
 
-                        }
-                    }
-                }
-            }
+
+        if (sourceCityId != destinationCityId && path[sourceCityId][destinationCityId] != -1) {
+            System.out.print("Shortest Path from city " + allCities.get(sourceCityId).getName() +
+                    " to city " + allCities.get(destinationCityId).getName() + " is (" + allCities.get(sourceCityId).getName() + "->");
+              printPath(path, sourceCityId, destinationCityId);
+              System.out.println(allCities.get(destinationCityId).getName() + ")");
+             System.out.println("The distance between cities :" + cost[sourceCityId][destinationCityId]);
+            return cost[sourceCityId][destinationCityId];
         }
+
+        return -1;
     }
 
     // Function to run Floyd-Warshell algorithm
-    public void floydWarshell(int[][] adjMatrix, int N, int sourceCityIndex, int destinationCityIndex) {
+    public int floydWarshell(int[][] adjMatrix, int N, int sourceCityIndex, int destinationCityIndex) {
         // cost[] and parent[] stores shortest-path
         // (shortest-cost/shortest route) information
         int[][] cost = new int[N][N];
@@ -100,18 +96,18 @@ public class FloydWarshell {
                 // graph contains a negative weight cycle
                 if (cost[v][v] < 0) {
                     System.out.println("Negative Weight Cycle Found!!");
-                    return;
+                    //    return;
                 }
             }
         }
         // Print the shortest path between all pairs of vertices
-        printSolution(cost, path, N, sourceCityIndex, destinationCityIndex);
+        //  printSolution(cost, path, N, sourceCityIndex, destinationCityIndex);
+        return printSolution(cost, path, N, sourceCityIndex, destinationCityIndex);
     }
 
-    public void  calculateShortestRange(CityModel sourceCity, CityModel destinationCity) {
+    public int calculateShortestRange(CityModel sourceCity, CityModel destinationCity) {
         if (sourceCity.equals(destinationCity)) {
             System.out.println("Unable to build route!");
-            return ;
         }
         int M = Integer.MAX_VALUE;
         int[][] matrix = new int[allCities.size()][allCities.size()];
@@ -142,7 +138,8 @@ public class FloydWarshell {
                 destinationIndex = i;
             }
         }
-        floydWarshell(matrix, allCities.size(), sourceIndex, destinationIndex);
+        return floydWarshell(matrix, allCities.size(), sourceIndex, destinationIndex);
 
-        }
+    }
+
 }
