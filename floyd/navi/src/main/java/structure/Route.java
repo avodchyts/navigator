@@ -29,10 +29,13 @@ public class Route {
         return idtargetCity;
     }
 
-    public void distance( ){
+    public int distance(){
 
         FloydWarshell floyd = new FloydWarshell();
-        floyd.calculateShortestRange(floyd.getAllCities().get(getIdsourceCity()), floyd.getAllCities().get(getIdtargetCity()));
+
+int result= floyd.calculateShortestRange(floyd.getAllCities().get(getIdsourceCity()), floyd.getAllCities().get(getIdtargetCity()));
+
+        return result ;
     }
 
     public String toString(){
